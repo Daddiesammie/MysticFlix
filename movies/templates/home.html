@@ -1,0 +1,317 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section id="center" class="center_home">
+    <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            {% for movie in movies %}
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="{{ forloop.counter0 }}" class="{% if forloop.first %}active{% endif %}" aria-label="Slide {{ forloop.counter }}"></button>
+            {% endfor %}
+        </div>
+        <div class="carousel-inner">
+            {% for movie in movies %}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                <div class="carousel-image-wrapper">
+                    <img src="{{ movie.image.url }}" class="d-block w-100 carousel-image" alt="{{ movie.title }} Image">
+                </div>
+                <div class="carousel-caption d-md-block">
+                    <h5 class="text-uppercase bg_red d-inline-block p-2 text-white">Real Actions</h5>
+                    <h1>{{ movie.title }}</h1>
+                    <p>{{ movie.description }}</p>
+                    <ul class="mb-0 mt-3">
+                        <li class="d-inline-block me-2"><a class="button_1" href="{% url 'movie_detail' movie.id %}">More Info <i class="fa fa-long-arrow-right ms-1"></i></a></li>
+                        <li class="d-inline-block"><a class="button_2" href="#">Contact Us <i class="fa fa-long-arrow-right ms-1"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</section>
+
+
+<section id="search-section" class="py-4" style="background-color: #011951f4;">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <form class="row g-2" method="GET" action="{% url 'movie_list' %}" id="search">
+                    <div class="col-12 col-lg-10">
+                        <input type="text" class="form-control" placeholder="Search by Movie Name" name="q" value="{{ query }}">
+                    </div>
+                    <div class="col-12 col-lg-2">
+                        <button class="btn btn-outline-secondary w-100" type="submit">Search</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<section id="upcome" class="p_3 bg-light">
+    <div class="container-xl">
+        <div class="row upcome_1 text-center">
+            <div class="col-md-12">
+                <h3 class="mb-0">UPCOMING MOVIES</h3>
+                <hr class="line me-auto ms-auto">
+                <ul class="nav nav-tabs justify-content-center border-0 mb-0 mt-4">
+                    <li class="nav-item">
+                        <a href="#upcoming" data-bs-toggle="tab" aria-expanded="false" class="nav-link active">
+                            <span class="d-md-block" style="color: blue;">Best of Library</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#released" data-bs-toggle="tab" aria-expanded="true" class="nav-link" >
+                            <span class="d-md-block" style="color: blue;">Released</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#featured" data-bs-toggle="tab" aria-expanded="false" class="nav-link border-0">
+                            <span class="d-md-block" style="color: blue;">Upcoming</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#series" data-bs-toggle="tab" aria-expanded="false" class="nav-link border-0">
+                            <span class="d-md-block" style="color: blue;">Series</span>
+                        </a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+
+        <div class="row upcome_2 mt-4">
+            <div class="tab-content">
+                <div class="tab-pane active" id="upcoming">
+                    <div class="upcome_2i row">
+                        {% for movie in movies %}
+                            {% if movie.featured %}
+                                <div class="col-md-3">
+                                    <div class="upcome_2i1 clearfix position-relative">
+                                        <div class="upcome_2i1i clearfix">
+                                            <img src="{{ movie.image.url }}" class="w-100" alt="{{ movie.title }}">
+                                        </div>
+                                        <div class="upcome_2i1i1 clearfix position-absolute top-0 text-center w-100">
+                                            <h6 class="text-uppercase"><a class="button_1" href="{{ movie.trailer_link }}">View Trailer</a></h6>
+                                            <h6 class="text-uppercase mb-0"><a class="button_2" href="{% url 'movie_detail' movie.id %}">View Details</a></h6>
+                                        </div>
+                                    </div>
+                                    <div class="upcome_2i_last bg-white p-3">
+                                        <div class="upcome_2i_lasti row">
+                                            <div class="col-md-9 col-9">
+                                                <div class="upcome_2i_lastil">
+                                                    <h5><a href="{% url 'movie_detail' movie.id %}">{{ movie.title }}</a></h5>
+                                                    <h6 class="text-muted">{{ movie.genre }}</h6>
+                                                    <span class="col_red">
+                                                        {% for i in "12345" %}
+                                                            <i class="fa {% if forloop.counter <= movie.rating %}fa-star{% else %}fa-star-o{% endif %}"></i>
+                                                        {% endfor %}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 p-0 col-3">
+                                                <div class="upcome_2i_lastir pt-3">
+                                                    <span><a class="col_red rounded" href="{% url 'movie_detail' movie.id %}"><i class="fa fa-eye"></i></a></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="tab-pane" id="released">
+                    <div class="upcome_2i row">
+                        {% for movie in movies %}
+                            {% if movie.released %}
+                                <div class="col-md-3">
+                                    <div class="upcome_2i1 clearfix position-relative">
+                                        <div class="upcome_2i1i clearfix">
+                                            <img src="{{ movie.image.url }}" class="w-100" alt="{{ movie.title }}">
+                                        </div>
+                                        <div class="upcome_2i1i1 clearfix position-absolute top-0 text-center w-100">
+                                            <h6 class="text-uppercase"><a class="button_1" href="{{ movie.trailer_link }}">View Trailer</a></h6>
+                                            <h6 class="text-uppercase mb-0"><a class="button_2" href="{% url 'movie_detail' movie.id %}">View Details</a></h6>
+                                        </div>
+                                    </div>
+                                    <div class="upcome_2i_last bg-white p-3">
+                                        <div class="upcome_2i_lasti row">
+                                            <div class="col-md-9 col-9">
+                                                <div class="upcome_2i_lastil">
+                                                    <h5><a href="{% url 'movie_detail' movie.id %}">{{ movie.title }}</a></h5>
+                                                    <h6 class="text-muted">{{ movie.genre }}</h6>
+                                                    <span class="col_red">
+                                                        {% for i in "12345" %}
+                                                            <i class="fa {% if forloop.counter <= movie.rating %}fa-star{% else %}fa-star-o{% endif %}"></i>
+                                                        {% endfor %}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 p-0 col-3">
+                                                <div class="upcome_2i_lastir pt-3">
+                                                    <span><a class="col_red rounded" href="{% url 'movie_detail' movie.id %}"><i class="fa fa-eye"></i></a></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="tab-pane" id="featured">
+                    <div class="upcome_2i row">
+                        {% for movie in movies %}
+                            {% if not movie.released %}
+                                <div class="col-md-3">
+                                    <div class="upcome_2i1 clearfix position-relative">
+                                        <div class="upcome_2i1i clearfix">
+                                            <img src="{{ movie.image.url }}" class="w-100" alt="{{ movie.title }}">
+                                        </div>
+                                        <div class="upcome_2i1i1 clearfix position-absolute top-0 text-center w-100">
+                                            <h6 class="text-uppercase"><a class="button_1" href="{{ movie.trailer_link }}">View Trailer</a></h6>
+                                            <h6 class="text-uppercase mb-0"><a class="button_2" href="{% url 'movie_detail' movie.id %}">View Details</a></h6>
+                                        </div>
+                                    </div>
+                                    <div class="upcome_2i_last bg-white p-3">
+                                        <div class="upcome_2i_lasti row">
+                                            <div class="col-md-9 col-9">
+                                                <div class="upcome_2i_lastil">
+                                                    <h5><a href="{% url 'movie_detail' movie.id %}">{{ movie.title }}</a></h5>
+                                                    <h6 class="text-muted">{{ movie.genre }}</h6>
+                                                    <span class="col_red">
+                                                        {% for i in "12345" %}
+                                                            <i class="fa {% if forloop.counter <= movie.rating %}fa-star{% else %}fa-star-o{% endif %}"></i>
+                                                        {% endfor %}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 p-0 col-3">
+                                                <div class="upcome_2i_lastir pt-3">
+                                                    <span><a class="col_red rounded" href="{% url 'movie_detail' movie.id %}"><i class="fa fa-eye"></i></a></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="tab-pane" id="series">
+                    <div class="upcome_2i row">
+                        {% for movie in movies %}
+                            {% if movie.series %}
+                                <div class="col-md-3">
+                                    <div class="upcome_2i1 clearfix position-relative">
+                                        <div class="upcome_2i1i clearfix">
+                                            <img src="{{ movie.image.url }}" class="w-100" alt="{{ movie.title }}">
+                                        </div>
+                                        <div class="upcome_2i1i1 clearfix position-absolute top-0 text-center w-100">
+                                            <h6 class="text-uppercase"><a class="button_1" href="{{ movie.trailer_link }}">View Trailer</a></h6>
+                                            <h6 class="text-uppercase mb-0"><a class="button_2" href="{% url 'movie_detail' movie.id %}">View Details</a></h6>
+                                        </div>
+                                    </div>
+                                    <div class="upcome_2i_last bg-white p-3">
+                                        <div class="upcome_2i_lasti row">
+                                            <div class="col-md-9 col-9">
+                                                <div class="upcome_2i_lastil">
+                                                    <h5><a href="{% url 'movie_detail' movie.id %}">{{ movie.title }}</a></h5>
+                                                    <h6 class="text-muted">{{ movie.genre }}</h6>
+                                                    <span class="col_red">
+                                                        {% for i in "12345" %}
+                                                            <i class="fa {% if forloop.counter <= movie.rating %}fa-star{% else %}fa-star-o{% endif %}"></i>
+                                                        {% endfor %}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 p-0 col-3">
+                                                <div class="upcome_2i_lastir pt-3">
+                                                    <span><a class="col_red rounded" href="{% url 'movie_detail' movie.id %}"><i class="fa fa-eye"></i></a></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+{% comment %} blog section {% endcomment %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pixeden-stroke-7-icon@1.2.3/pe-icon-7-stroke/dist/pe-icon-7-stroke.min.css">
+<section id="news" class="p_3 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 text-center full-content">
+                <h2 class="section-title no-border v-3"><span>Latest</span> News</h2>
+                <p class="sub-section-title v-2">Be Updated With our Latest Gists</p>
+                <div class="mrb-45"></div>
+            </div>
+        </div>
+        <div class="row">
+            {% for post in latest_posts %}
+                <div class="col-md-6 col-xl-4">
+                    <article class="post">
+                        <div class="article-v2">
+                            <figure class="article-thumb">
+                                <a href="{% url 'blog:post_detail' post.pk %}">
+                                    <img src="{{ post.image.url }}" alt="{{ post.title }}" class="fixed-shape" />
+                                </a>
+                            </figure>
+                            <div class="article-content-main">
+                                <div class="article-header">
+                                    <h2 class="entry-title"><a href="{% url 'blog:post_detail' post.pk %}">{{ post.title }}</a></h2>
+                                    <div class="entry-meta">
+                                        <div class="entry-date">{{ post.created_at|date:"d M Y" }}</div>
+                                        <div class="entry-cat">
+                                            <a href="#">{{ post.author }}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="article-content">
+                                    <p>{{ post.content|truncatewords:30 }}</p>
+                                </div>
+                                <div class="article-footer">
+                                    <div class="row">
+                                        <div class="col-6 text-left footer-link">
+                                            <a href="{% url 'blog:post_detail' post.pk %}" class="more-link">Read More</a>
+                                        </div>
+                                        <div class="col-6 text-right footer-meta">
+                                            <a href="{% url 'blog:post_detail' post.pk %}#comments">{{ post.comments_count }} <i class="pe-7s-comment"></i></a>
+                                            <a href="{% url 'blog:like_post' post.pk %}">{{ post.likes_count }} <i class="pe-7s-like"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+
+{% endblock %}

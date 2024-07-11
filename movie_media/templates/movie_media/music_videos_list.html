@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5 py-5">
+    {% if music_videos %}
+        <h2 class="mb-4">Music Videos</h2>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for movie in music_videos %}
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="{{ movie.image.url }}" class="card-img-top img-fluid" alt="{{ movie.title }} Image" style="height: 200px; object-fit: cover;">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ movie.title }}</h5>
+                            <p class="card-text text-muted">{{ movie.genre }} | Released: {{ movie.release_year }} | Rating: {{ movie.rating }}</p>
+                            <p class="card-text">{{ movie.description|truncatewords:20 }}</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="{{ movie.trailer_url }}" class="btn btn-primary mr-2" target="_blank">Watch Trailer</a>
+                            <a href="{{ movie.download_link }}" class="btn btn-success" target="_blank">Download</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="alert alert-warning">No music videos found.</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,33 @@
+<!-- movie_media/templates/movie_media/movie_detail.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5 movie-details-container py-5">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="movie-image">
+                <img src="{{ movie.image.url }}" alt="{{ movie.title }} Image" class="img-fluid rounded shadow-sm">
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="movie-info">
+                <h1 class="display-4">{{ movie.title }}</h1>
+                <p class="text-muted"><strong>Genre:</strong> {{ movie.genre }}</p>
+                <p class="text-muted"><strong>Release Year:</strong> {{ movie.release_year }}</p>
+                <p class="text-muted"><strong>Rating:</strong> 
+                    <span class="text-warning">
+                        {% for i in "12345" %}
+                            <i class="fa {% if forloop.counter <= movie.rating %}fa-star{% else %}fa-star-o{% endif %}"></i>
+                        {% endfor %}
+                    </span>
+                </p>
+                <p class="text-muted"><strong>Description:</strong> {{ movie.description }}</p>
+                <p><a href="{{ movie.trailer_link }}" class="btn btn-primary" target="_blank">Watch Trailer</a></p>
+                <p><a href="{{ movie.download_link }}" class="btn btn-success" target="_blank">Download Now</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

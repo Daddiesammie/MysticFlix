@@ -1,0 +1,375 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ site_config.site_name }}</title>
+    <!-- Favicon -->
+    {% if site_config.site_favicon %}
+        <link rel="icon" href="{{ site_config.site_favicon.url }}" type="image/x-icon">
+    {% endif %}
+
+    <!-- CSS -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" >
+    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet" >
+    <link href="{% static 'css/global.css' %}" rel="stylesheet">
+    <link href="{% static 'css/index.css' %}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- JavaScript -->
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+
+</head>
+<body>
+	<section id="header">
+		<!-- Navbar -->
+		<nav class="navbar navbar-expand-md navbar-light" id="navbar_sticky">
+			<div class="container-fluid">
+				<a class="navbar-brand fs-4 p-0 fw-bold text-white text-uppercase" href="{% url 'home' %}">
+					{% if site_config.site_logo %}
+						<img src="{{ site_config.site_logo.url }}" alt="{{ site_config.site_name }} Logo"><span> {{ site_config.site_name }}</span>
+					{% else %}
+						{{ site_config.site_name }}
+					{% endif %}
+				</a>
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav ms-auto mb-2 mb-md-0">
+						<li class="nav-item">
+							<a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{% url 'about' %}">About</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{% url 'home' %}#news">Blog</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{% url 'contact' %}">Contact</a>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								Categories
+							</a>
+							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<li><a class="dropdown-item" href="{% url 'movie_list' %}">Movies</a></li>
+								<li><a class="dropdown-item" href="{% url 'drama_list' %}">Drama</a></li>
+								<li><a class="dropdown-item" href="{% url 'series_list' %}">Series</a></li>
+								<li><a class="dropdown-item" href="{% url 'animation_list' %}">Animations</a></li>
+								<li><a class="dropdown-item" href="{% url 'music_videos_list' %}">Music Videos</a></li>
+							</ul>
+						</li>
+						{% if user.is_authenticated %}
+							<li class="nav-item d-flex align-items-center">
+								<a class="nav-link button btn btn-primary text-white me-2" href="{% url 'movie_list' %}">Dashboard</a>
+								<a class="nav-link p-0" href="{% url 'profile' %}"><i class="fa fa-user-circle fs-4 text-white"></i></a>
+							</li>
+						{% else %}
+							<li class="nav-item">
+								<a class="nav-link button btn btn-primary text-white" href="{% url 'register' %}">SIGN UP</a>
+							</li>
+						{% endif %}
+					</ul>
+				</div>
+			</div>
+		</nav>
+		
+		
+		
+		
+
+		
+		
+						
+					{% block content %}
+
+					{% endblock %}
+
+					
+	<script>
+		window.onscroll = function() {myFunction()};
+
+		var navbar_sticky = document.getElementById("navbar_sticky");
+		var sticky = navbar_sticky.offsetTop;
+		var navbar_height = document.querySelector('.navbar').offsetHeight;
+
+		function myFunction() {
+		if (window.pageYOffset >= sticky + navbar_height) {
+			navbar_sticky.classList.add("sticky")
+			document.body.style.paddingTop = navbar_height + 'px';
+		} else {
+			navbar_sticky.classList.remove("sticky");
+			document.body.style.paddingTop = '0'
+		}
+		}
+	</script>
+
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+	<!-- templates/base.html or a separate CSS file -->
+	<style>
+		/* Adjust logo size */
+		.navbar-brand img {
+			max-height: 40px;
+			width: auto;
+		}
+		.carousel-image-wrapper {
+			max-height: 500px; /* Adjust this value as needed */
+			overflow: hidden;
+			position: relative;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+		
+		.carousel-image {
+			max-height: 500px;
+			object-fit: cover;
+			width: 100%;
+			height: 100%;
+			transition: transform 0.5s ease-in-out;
+		}
+		
+		.carousel-item {
+			transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+		}
+		
+		.carousel-caption {
+			background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+			border-radius: 5px;
+			padding: 15px;
+		}
+		
+		.carousel-caption h5 {
+			margin-bottom: 10px;
+			font-size: 1.25rem;
+		}
+		
+		.carousel-caption h1 {
+			margin-bottom: 10px;
+			font-size: 2.5rem;
+		}
+		
+		.carousel-caption p {
+			margin-bottom: 20px;
+		}
+		
+		.button_1, .button_2 {
+			color: #fff;
+			background-color: #ff4500;
+			padding: 10px 20px;
+			border-radius: 50px;
+			text-decoration: none;
+			transition: background-color 0.3s;
+		}
+		
+		.button_1:hover, .button_2:hover {
+			background-color: #e03e00;
+		}
+		
+		.carousel-control-prev-icon, .carousel-control-next-icon {
+			background-color: #000;
+			border-radius: 50%;
+		}
+		
+		.carousel-indicators button {
+			background-color: #fff;
+			border: none;
+			height: 12px;
+			width: 12px;
+			border-radius: 50%;
+		}
+		
+		.carousel-indicators .active {
+			background-color: #ff4500;
+		}
+		
+		
+		/* Example CSS for post_detail.html */
+
+		#post-detail {
+			padding: 20px;
+		}
+
+		.post-content {
+			background-color: #fff;
+			padding: 20px;
+			border-radius: 8px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		}
+
+		.card {
+			border: none; /* Remove default card border */
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+		}
+
+		.card-body {
+			padding: 20px; /* Adjust padding as needed */
+		}
+
+		.comment {
+			background-color: #f0f0f0;
+			padding: 10px;
+			border-radius: 4px;
+			box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+		}
+
+		.comment p {
+			margin-bottom: 5px;
+		}
+
+		.comment .text-muted {
+			font-size: 14px;
+		}
+
+		/* Responsive image styling */
+		.post-content img {
+			max-width: 100%;
+			height: auto;
+			border-radius: 8px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		}
+		
+
+		.fixed-shape {
+			width: 100%;
+			height: 200px; /* Adjust the height as needed */
+			object-fit: cover; /* This will crop the image to fit the dimensions */
+		}
+
+		.post .article-v2 {
+			padding: 0 15px;
+		}
+
+		.post .article-v2 .entry-title {
+			font-size: 16px;
+			color: #666666;
+			font-weight: 600;
+		}
+
+		.post .article-v2 .article-header {
+			margin-bottom: 15px;
+		}
+
+		.post .article-v2 .article-content-main {
+			-webkit-box-shadow: 1px 0px 20px 1px rgba(0, 0, 0, 0.15);
+			box-shadow: 1px 0px 20px 1px rgba(0, 0, 0, 0.15);
+			padding: 30px;
+			position: relative;
+			background: #fff;
+			margin-top: -75px;
+		}
+
+		@media only screen and (max-width: 1024px) {
+			.post .article-v2 .article-content-main {
+				padding: 15px;
+				margin-bottom: 30px;
+			}
+		}
+
+		.post .article-v2 .article-content p:last-of-type {
+			margin-bottom: 0;
+		}
+
+		.post .article-v2 .article-thumb {
+			position: relative;
+			left: 25px;
+			margin-bottom: 0;
+		}
+
+		.post .article-v2 .article-footer {
+			border-top: 1px solid #ebebeb;
+			padding-top: 15px;
+			margin-top: 20px;
+		}
+
+		.post .article-v2 .article-footer .more-link {
+			color: #ffa800;
+		}
+
+		.post .article-v2 .article-footer .footer-meta a {
+			color: #aaa;
+			font-size: 15px;
+			margin-right: 5px;
+		}
+
+		.post .article-v2 .article-footer .footer-meta a i {
+			font-size: 16px;
+			margin-left: 2px;
+		}
+
+	</style>
+
+	<section id="footer" class="p-3">
+		<div class="container-xl">
+			<div class="row">
+				<div class="col-md-2">
+					<div class="footer_1i">
+						<h6 class="text-white fw-bold">MOVIE CATEGORIES</h6>
+						<hr class="line mb-4">
+						<div class="row footer_1i_small">
+							<h6 class="col-md-12 col-6"><i class="fa fa-circle me-1 col_red font-10"></i> <a class="text-muted" href="{% url 'movie_list' %}">Action Movie</a></h6>
+							<h6 class="mt-2 col-md-12 col-6"><i class="fa fa-circle me-1 col_red font-10"></i> <a class="text-muted" href="{% url 'animation_list' %}">Animation Movie</a></h6>
+							<h6 class="mt-2 col-md-12 col-6"><i class="fa fa-circle me-1 col_red font-10"></i> <a class="text-muted" href="{% url 'series_list' %}">Series Movie</a></h6>
+							<h6 class="mt-2 col-md-12 col-6"><i class="fa fa-circle me-1 col_red font-10"></i> <a class="text-muted" href="{% url 'music_videos_list' %}">Music Videos</a></h6>
+							<h6 class="mb-0 mt-2 col-md-12 col-6"><i class="fa fa-circle me-1 col_red font-10"></i> <a class="text-muted" href="{% url 'drama_list' %}">Drama</a></h6>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="footer_1i">
+						<h6 class="text-white fw-bold">DISCLAIMER</h6>
+						<hr class="line mb-4">
+						<p class="text-muted">{{ site_config.disclaimer }}</p>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="footer_1i">
+						<h6 class="text-white fw-bold">OUR SOCIALS</h6>
+						<hr class="line mb-4">
+						<div class="row footer_1i_small">
+							{% if site_config.facebook_link %}
+								<h6 class="col-md-12 col-6"><i class="fa fa-circle me-1 col_red font-10"></i> <a class="text-muted" href="{{ site_config.facebook_link }}">Facebook</a></h6>
+							{% endif %}
+							{% if site_config.twitter_link %}
+								<h6 class="mt-2 col-md-12 col-6"><i class="fa fa-circle me-1 col_red font-10"></i> <a class="text-muted" href="{{ site_config.twitter_link }}">Twitter</a></h6>
+							{% endif %}
+							{% if site_config.instagram_link %}
+								<h6 class="mt-2 col-md-12 col-6"><i class="fa fa-circle me-1 col_red font-10"></i> <a class="text-muted" href="{{ site_config.instagram_link }}">Instagram</a></h6>
+							{% endif %}
+							{% if site_config.linkedin_link %}
+								<h6 class="mt-2 col-md-12 col-6"><i class="fa fa-circle me-1 col_red font-10"></i> <a class="text-muted" href="{{ site_config.linkedin_link }}">LinkedIn</a></h6>
+							{% endif %}
+							{% if site_config.youtube_link %}
+								<h6 class="mt-2 col-md-12 col-6"><i class="fa fa-circle me-1 col_red font-10"></i> <a class="text-muted" href="{{ site_config.youtube_link }}">YouTube</a></h6>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+				<div class="col-md-2">
+					<div class="footer_1i">
+						<h6 class="text-white fw-bold">SUBSCRIPTION</h6>
+						<hr class="line mb-4">
+						<p class="text-muted">Subscribe your Email address for latest news & updates.</p>
+						<form method="post" action="{% url 'subscribe' %}">
+							{% csrf_token %}
+							<input name="email" class="form-control bg-transparent" placeholder="Enter Email Address" type="email" required>
+							<h6 class="mb-0 mt-4">
+								<button type="submit" class="button_1 pt-3 pb-3">Submit <i class="fa fa-check-circle ms-1"></i></button>
+							</h6>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</body>
+
+</html>

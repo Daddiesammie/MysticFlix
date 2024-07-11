@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5 series-details-container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="series-image">
+                <img src="{{ series.image.url }}" alt="{{ series.title }} Image" class="img-fluid rounded shadow-sm">
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="series-info">
+                <h1 class="display-4">{{ series.title }}</h1>
+                <p class="text-muted"><strong>Release Year:</strong> {{ series.release_year }}</p>
+                <p class="text-muted"><strong>Rating:</strong>
+                    <span class="text-warning">
+                        {% for i in "12345" %}
+                            <i class="fa {% if forloop.counter <= series.rating %}fa-star{% else %}fa-star-o{% endif %}"></i>
+                        {% endfor %}
+                    </span>
+                </p>
+                <p class="text-muted"><strong>Description:</strong> {{ series.description }}</p>
+                <p><a href="{{ series.trailer_link }}" class="btn btn-primary" target="_blank">Watch Trailer</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <h2>Seasons</h2>
+            {% for season in seasons %}
+                <div class="card mb-3">
+                    <div class="card-header">
+                        Season {{ season.season_number }} - {{ season.release_year }}
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">{{ season.description }}</p>
+                        <h3>Episodes</h3>
+                        {% for episode in season.episodes.all %}
+                            <div>
+                                <h4>Episode {{ episode.episode_number }}: {{ episode.title }}</h4>
+                                <p>{{ episode.description }}</p>
+                                <p><a href="{{ episode.download_link }}" class="btn btn-success" target="_blank">Download Episode</a></p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
